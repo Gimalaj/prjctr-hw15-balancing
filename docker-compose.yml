@@ -1,0 +1,48 @@
+version: '3.6'
+services:
+  nginx_mail:
+    container_name: load_balancer 
+    image: shashwot/nginx-more
+    restart: always
+    network_mode: "host"
+    ports:
+      - "80:80"
+    volumes:
+      - "./etc/load_balancer/default.conf:/etc/nginx/nginx.conf"
+      - "./etc/load_balancer/GeoLite2-Country.mmdb:/var/lib/GeoIP/GeoLite2-Country.mmdb"
+
+  nginx_us:
+    platform: linux/x86_64
+    image: nginx:latest
+    volumes:
+      - ./nginx/html/:/usr/share/nginx/html/
+      - ./nginx/conf/:/etc/nginx/conf.d/
+    ports:
+      - '8080:80'
+
+  nginx_us_2:
+    platform: linux/x86_64
+    image: nginx:latest
+    volumes:
+      - ./nginx/html/:/usr/share/nginx/html/
+      - ./nginx/conf/:/etc/nginx/conf.d/
+    ports:
+      - '8081:80'
+
+  nginx_uk:
+    platform: linux/x86_64
+    image: nginx:latest
+    volumes:
+      - ./nginx/html/:/usr/share/nginx/html/
+      - ./nginx/conf/:/etc/nginx/conf.d/
+    ports:
+      - '8082:80'
+
+  nginx_rest:
+    platform: linux/x86_64
+    image: nginx:latest
+    volumes:
+      - ./nginx/html/:/usr/share/nginx/html/
+      - ./nginx/conf/:/etc/nginx/conf.d/
+    ports:
+      - '8083:80'
